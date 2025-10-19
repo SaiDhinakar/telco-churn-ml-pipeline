@@ -12,3 +12,4 @@ wheels/
 ss/
 mlruns/
 mlartifacts/
+logs/
