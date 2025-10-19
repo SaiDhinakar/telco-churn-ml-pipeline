@@ -1,0 +1,10 @@
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: deployment/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./mlartifacts:/app/mlartifacts
+      - ./mlruns:/app/mlruns  
