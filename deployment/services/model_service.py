@@ -1,17 +1,18 @@
 import mlflow
 import os
-from configs import config
+from configs import get_config, reload_config
 import pandas as pd
 from utils.logger import setup_logger
 
 models_logger = setup_logger('model_service_logger', 'model_service.log')
+model = None
+config = get_config()
 
 def initialize_model_service():
     """Initialize and load the ML model from the specified URI."""
     model_uri = config["model_uri"]
     fallback_model_uri = config["fallback_model_uri"]
-    model = None
-
+    print(model_uri, '\n', fallback_model_uri)
     # Check if MLflow server is running, if not use local paths
     mlflow_host = config.get("mlflow_host", "127.0.0.1")
     mlflow_port = config.get("mlflow_port", 5000)
@@ -75,12 +76,25 @@ def predict(data):
         if isinstance(data, dict):
             data = pd.DataFrame([data])
         
-        prediction = model_service.predict(data)
+        prediction = model.predict(data)
         models_logger.info(f"Prediction made: {prediction}")
         return prediction[0] if hasattr(prediction, '__len__') and len(prediction) == 1 else prediction
     except Exception as e:
         models_logger.error(f"Prediction error: {e}")
         raise
 
-# Initialize the model service
-model_service = initialize_model_service()
+def get_model():
+    """Return the currently loaded model."""
+    return model
+
+def restart_model_service():
+    """Restart the model service by re-initializing the model."""
+    global model
+    global config
+    
+    config = reload_config()
+    models_logger.info("Restarting the model service...")
+    model = initialize_model_service()
+    models_logger.info("Model service restarted successfully.")
+    
+model = initialize_model_service()

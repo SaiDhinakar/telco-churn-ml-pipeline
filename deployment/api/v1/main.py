@@ -2,6 +2,7 @@ from fastapi import FastAPI, APIRouter
 from deployment.models.telcom_customer import PredictionRequest, PredictionResponse
 from utils.logger import setup_logger
 from deployment.services.model_service import predict
+from deployment.services.model_service import restart_model_service
 
 
 api_logger = setup_logger('api_logger', 'api.log')
@@ -27,5 +28,16 @@ def predict_churn(request: PredictionRequest):
         api_logger.error(f"Error occurred: {e}")
         return {"error": str(e)}
 
+@router.get("/restart")
+def restart_service():
+    api_logger.info("Restarting the backend service...")
+    try:
+        restart_model_service()
+        api_logger.info("Service restarted successfully.")
+        return {"message": "Service restarted."}
+    except Exception as e:
+        api_logger.error(f"Error during restart: {e}")
+        return {"error": str(e)}
+    
 # Include the router in the app
 app.include_router(router)
