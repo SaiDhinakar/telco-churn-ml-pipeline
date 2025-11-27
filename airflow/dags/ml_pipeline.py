@@ -10,6 +10,10 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 
+# Get MLflow Tracking URI from environment variable (set in docker-compose.yaml)
+# This supports distributed architecture where MLflow runs on a separate server
+MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI', 'http://localhost:5000')
+
 # Add project path to Python path
 sys.path.insert(0, '/opt/airflow/project')
 
@@ -49,11 +53,11 @@ def run_preprocess(**context):
     processed_data_path = '/opt/airflow/project/data/processed/cleaned_telco_customer_churn.csv'
     
     result_path = preprocess_data(
-        input_path=raw_data_path,
-        output_path=processed_data_path
+        raw_data_path=raw_data_path,
+        processed_data_path=processed_data_path
     )
-    context['ti'].xcom_push(key='processed_data_path', value=result_path)
-    return result_path
+    context['ti'].xcom_push(key='processed_data_path', value=processed_data_path)
+    return processed_data_path
 
 
 def run_train(**context):
@@ -64,7 +68,7 @@ def run_train(**context):
     
     results = train_pipeline(
         data_path=processed_data_path,
-        tracking_uri='/opt/airflow/project/mlruns',
+        tracking_uri=MLFLOW_TRACKING_URI,
         experiment_name='Telco_Churn_Models'
     )
     
@@ -77,11 +81,11 @@ def run_update_config(**context):
     Task to select best model and update config.
     """
     update_config_pipeline(
-        tracking_uri='/opt/airflow/project/mlruns',
+        tracking_uri=MLFLOW_TRACKING_URI,
         experiment_name='Telco_Churn_Models',
         metric='accuracy',
         config_path='/opt/airflow/project/configs/prod.yml',
-        register=True
+        register=True  # Model registry support for distributed MLflow server
     )
     return "Config updated successfully"
 

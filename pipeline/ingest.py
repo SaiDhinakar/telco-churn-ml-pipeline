@@ -45,28 +45,22 @@ def ingest_data(output_path: str = None) -> str:
         
         # Download from Kaggle
         logger.info("Downloading dataset from Kaggle...")
-        downloaded_dir_path = kagglehub.dataset_download("blastchar/telco-customer-churn")
+        downloaded_dir_path = kagglehub.dataset_download("blastchar/telco-customer-churn", force_download=False)
         logger.info(f"Dataset downloaded to: {downloaded_dir_path}")
         
         # Create destination directory
         dest_dir = Path(output_path).parent
         dest_dir.mkdir(parents=True, exist_ok=True)
         
-        temp_dest = dest_dir / "_temp_download"
-        if temp_dest.exists():
-            shutil.rmtree(temp_dest)
-        
-        moved_dir_path = shutil.move(downloaded_dir_path, str(temp_dest))
-        
+        # Find the CSV file in the downloaded directory
         source_csv_filename = "WA_Fn-UseC_-Telco-Customer-Churn.csv"
-        source_csv_path = Path(moved_dir_path) / source_csv_filename
+        source_csv_path = Path(downloaded_dir_path) / source_csv_filename
         
         if not source_csv_path.exists():
             raise FileNotFoundError(f"Expected CSV file not found: {source_csv_path}")
         
-        shutil.move(str(source_csv_path), output_path)
-        
-        shutil.rmtree(moved_dir_path)
+        # Copy the file to the destination
+        shutil.copy2(str(source_csv_path), output_path)
         
         logger.info(f"Data ingested successfully. Saved to: {output_path}")
         return output_path

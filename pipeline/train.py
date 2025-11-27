@@ -140,7 +140,14 @@ def train_models(
         Dictionary of model results
     """
     logger.info("Setting up MLflow...")
+    
+    # Set tracking URI - add file:// prefix for local paths
+    if tracking_uri and not tracking_uri.startswith('http'):
+        # For local file tracking, use file:// prefix
+        if not tracking_uri.startswith('file://'):
+            tracking_uri = f'file://{tracking_uri}'
     mlflow.set_tracking_uri(tracking_uri)
+    
     mlflow.set_experiment(experiment_name)
     
     results = {}

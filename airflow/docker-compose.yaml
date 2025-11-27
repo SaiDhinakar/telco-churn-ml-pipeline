@@ -11,7 +11,12 @@ x-airflow-common:
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG: 1
+    AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
     PYTHONPATH: /opt/airflow/project
+    # External service URLs from .env file
+    MLFLOW_TRACKING_URI: ${MLFLOW_TRACKING_URI}
+    AIRFLOW_PUBLIC_URL: ${AIRFLOW_PUBLIC_URL}
+    API_SERVER_URL: ${API_SERVER_URL}
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs

@@ -109,7 +109,7 @@ def save_processed_data(df: pd.DataFrame, output_path: str) -> None:
 def preprocess_data(
     raw_data_path: str = None,
     processed_data_path: str = None
-) -> None:
+) -> str:
     """
     Main preprocessing pipeline.
     
@@ -118,7 +118,7 @@ def preprocess_data(
         processed_data_path: Path to save processed data
         
     Returns:
-        None
+        Path to the processed data file
     """
     logger.info("Starting data preprocessing pipeline...")
     
@@ -143,6 +143,7 @@ def preprocess_data(
         save_processed_data(df, processed_data_path)
         
         logger.info("Preprocessing pipeline completed successfully!")
+        return processed_data_path
         
     except Exception as e:
         logger.error(f"Error during preprocessing: {str(e)}")
