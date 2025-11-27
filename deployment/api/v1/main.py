@@ -3,8 +3,8 @@ import requests
 import os
 from dotenv import load_dotenv
 
-from deployment.models.telcom_customer import PredictionRequest, PredictionResponse
 from utils.logger import setup_logger
+from deployment.models.telcom_customer import PredictionRequest, PredictionResponse
 from deployment.services.model_service import predict
 from deployment.services.model_service import restart_model_service
 

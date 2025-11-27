@@ -1,0 +1,11 @@
+tests/
+.git/
+airflow/
+mlruns/
+mlartifacts/
+docs/
+data/
+.venv/
+.*
+ss/
+notebooks/
