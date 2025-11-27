@@ -32,6 +32,7 @@ docker-compose up airflow-init
 ```
 
 This will:
+
 - Initialize the Airflow database
 - Create an admin user (username: admin, password: admin)
 - Set up required directories with proper permissions
@@ -43,6 +44,7 @@ docker-compose up -d
 ```
 
 This starts:
+
 - PostgreSQL database
 - Airflow webserver (http://localhost:8080)
 - Airflow scheduler
@@ -59,6 +61,7 @@ This starts:
 ### 1. Enable the DAG
 
 In the Airflow UI:
+
 1. Navigate to the DAGs page
 2. Find `telco_churn_training_pipeline`
 3. Toggle the switch to enable it
@@ -87,10 +90,12 @@ The pipeline consists of 4 tasks:
 ## Accessing Pipeline Logs
 
 ### From Airflow UI:
+
 - Click on a task in the Graph/Grid view
 - Click "Log" to view execution logs
 
 ### From Host Machine:
+
 ```bash
 # View logs directory
 ls -la airflow/logs/dag_id=telco_churn_training_pipeline/
@@ -104,6 +109,7 @@ tail -f airflow/logs/dag_id=telco_churn_training_pipeline/run_id=*/task_id=train
 MLflow artifacts are stored in `mlruns/` and `mlartifacts/` in the project root.
 
 To view MLflow UI:
+
 ```bash
 # From project root
 mlflow ui --backend-store-uri file:///path/to/mlruns
@@ -112,6 +118,7 @@ mlflow ui --backend-store-uri file:///path/to/mlruns
 ## Volume Mounts
 
 The Airflow containers have access to:
+
 - `/opt/airflow/project/pipeline/` - Pipeline scripts
 - `/opt/airflow/project/data/` - Data directory
 - `/opt/airflow/project/mlruns/` - MLflow tracking
@@ -127,6 +134,7 @@ docker-compose down
 ```
 
 To remove all data (including database):
+
 ```bash
 docker-compose down -v
 ```
@@ -136,6 +144,7 @@ docker-compose down -v
 ### Permission Issues
 
 If you encounter permission errors:
+
 ```bash
 # Set proper ownership
 sudo chown -R ${AIRFLOW_UID}:0 airflow/logs airflow/dags airflow/plugins
@@ -181,6 +190,7 @@ Then update docker-compose.yaml to build from this Dockerfile.
 ### Changing DAG Schedule
 
 Edit `airflow/dags/ml_pipeline.py`:
+
 ```python
 schedule_interval='@daily',  # Run daily
 # or
@@ -194,6 +204,7 @@ Edit task definitions in the DAG file to change paths or add new environment var
 ### Scaling Workers
 
 To add more workers, update `docker-compose.yaml`:
+
 ```yaml
   airflow-worker:
     <<: *airflow-common
@@ -202,23 +213,3 @@ To add more workers, update `docker-compose.yaml`:
 ```
 
 And change executor to CeleryExecutor in environment variables.
-
-## Best Practices
-
-1. **Version Control**: Keep DAG files in version control
-2. **Idempotency**: Ensure tasks can be safely re-run
-3. **Logging**: Use proper logging in pipeline scripts
-4. **Error Handling**: Implement proper exception handling
-5. **Testing**: Test pipeline scripts independently before running in Airflow
-6. **Monitoring**: Set up email alerts for failures
-7. **Resource Management**: Monitor disk space and memory usage
-
-## Next Steps
-
-1. Implement actual data processing logic in pipeline scripts
-2. Add data quality checks
-3. Implement model validation logic
-4. Set up notifications (email/Slack)
-5. Add more complex dependencies or parallel tasks
-6. Implement SLA monitoring
-7. Add data lineage tracking
