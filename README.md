@@ -1,4 +1,4 @@
-# 🚀 Telco Customer Churn MLOps Pipeline
+# 🚀 Telco Customer Churn ML Pipeline
 
 [![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)](https://fastapi.tiangolo.com/)
@@ -6,7 +6,7 @@
 [![MLflow](https://img.shields.io/badge/MLflow-Latest-blue.svg)](https://mlflow.org/)
 [![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED.svg)](https://www.docker.com/)
 
-A production-ready MLOps pipeline for predicting customer churn in telecommunications companies. This project demonstrates end-to-end machine learning workflow automation using **Apache Airflow** for orchestration, **MLflow** for experiment tracking, and **FastAPI** for model serving - all containerized with **Docker**.
+A production-ready ML pipeline for predicting customer churn in telecommunications companies. This project demonstrates end-to-end machine learning workflow automation using **Apache Airflow** for orchestration, **MLflow** for experiment tracking, and **FastAPI** for model serving - all containerized with **Docker**.
 
 ---
 
@@ -29,7 +29,7 @@ A production-ready MLOps pipeline for predicting customer churn in telecommunica
 
 ## 🎯 Project Overview
 
-This project implements a **complete MLOps pipeline** that automates the entire machine learning lifecycle for predicting customer churn in the telecommunications industry. The pipeline handles everything from data ingestion to model deployment, with orchestration, monitoring, and serving capabilities.
+This project implements a **complete ML pipeline** that automates the entire machine learning lifecycle for predicting customer churn in the telecommunications industry. The pipeline handles everything from data ingestion to model deployment, with orchestration, monitoring, and serving capabilities.
 
 ### What Does This Pipeline Do?
 
@@ -232,8 +232,8 @@ Before you begin, ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/SaiDhinakar/telco-churn-mlops-pipeline.git
-cd telco-churn-mlops-pipeline
+git clone https://github.com/SaiDhinakar/telco-churn-ML-pipeline.git
+cd telco-churn-ML-pipeline
 ```
 
 ### Step 2: Configure Environment Variables
@@ -466,7 +466,7 @@ GET /api/v1/training-status/{dag_run_id}
 ## 📁 Project Structure
 
 ```
-telco-churn-mlops-pipeline/
+telco-churn-ML-pipeline/
 │
 ├── 🎭 airflow/                    # Apache Airflow orchestration
 │   ├── dags/
@@ -842,7 +842,7 @@ Contributions are welcome! Here's how you can help:
 **Sai Dhinakar**
 
 - GitHub: [@SaiDhinakar](https://github.com/SaiDhinakar)
-- Repository: [telco-churn-mlops-pipeline](https://github.com/SaiDhinakar/telco-churn-mlops-pipeline)
+- Repository: [telco-churn-ML-pipeline](https://github.com/SaiDhinakar/telco-churn-ML-pipeline)
 
 ---
 
